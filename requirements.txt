@@ -1,0 +1,7 @@
+black==24.4.0
+email-validator==2.1.1
+fastapi==0.110.1
+pydantic==2.7.0
+pydantic-settings==2.2.1
+python-decouple==3.8
+uvicorn==0.29.0
