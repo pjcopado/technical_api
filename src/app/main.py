@@ -3,6 +3,7 @@ import fastapi
 from src.app.core.config.manager import settings
 from src.app.core.middlewares import register_middlewares
 from src.app.core import exceptions
+from src.app.api import router
 
 
 def initialize_backend_application() -> fastapi.FastAPI:
@@ -17,6 +18,8 @@ def initialize_backend_application() -> fastapi.FastAPI:
             content={"detail": exc.detail},
             headers=exc.headers,
         )
+
+    app.include_router(router=router, prefix=settings.ROOT_PATH)
 
     return app
 
