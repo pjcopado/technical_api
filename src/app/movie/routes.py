@@ -3,12 +3,12 @@ import fastapi
 from . import schemas as sch, services
 
 
-router = fastapi.APIRouter(prefix="/movies", tags=["movies"])
+router = fastapi.APIRouter(prefix="/movies", tags=["[movies] movies"])
 
 
 @router.post(
     "",
-    summary="create agency",
+    summary="upload movies",
     status_code=fastapi.status.HTTP_201_CREATED,
     response_model=list[sch.Movie],
 )

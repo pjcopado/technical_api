@@ -1,15 +1,20 @@
 import fastapi
+from fastapi_pagination import add_pagination
 
 from src.app.core.config.manager import settings
 from src.app.core.middlewares import register_middlewares
-from src.app.core import exceptions
+from src.app.core import exceptions, database
 from src.app.api import router
+from src.app.common import models
+
+models.Base.metadata.create_all(bind=database.engine)
 
 
 def initialize_backend_application() -> fastapi.FastAPI:
     app = fastapi.FastAPI(**settings.set_backend_app_attributes)
 
     register_middlewares(app)
+    add_pagination(app)
 
     @app.exception_handler(exceptions.CustomError)
     async def custom_exceptions_handler(request: fastapi.Request, exc: exceptions.CustomError) -> fastapi.responses.JSONResponse:
