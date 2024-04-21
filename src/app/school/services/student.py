@@ -1,5 +1,4 @@
 from src.app.school import repository, schemas as sch, enums
-from src.app.core import exceptions
 
 
 class StudentService:
@@ -14,10 +13,7 @@ class StudentService:
         return self.repository.get_by_id(id)
 
     def get_by_id_or_raise(self, id: int):
-        record = self.get_by_id(id)
-        if not record:
-            raise exceptions.CustomError(status_code=404, detail="Student does not exist")
-        return record
+        return self.repository.get_by_id_or_raise(id)
 
     def create(self, obj_in: sch.StudentCreateSch):
         return self.repository.create(obj_in=obj_in)

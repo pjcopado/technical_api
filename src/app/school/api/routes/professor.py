@@ -17,24 +17,28 @@ router = fastapi.APIRouter(prefix="/professors", tags=["[school] professors"])
     response_model=Page[sch.ProfessorSch],
 )
 async def get_professor(
-    db: DBSession,
+    session: DBSession,
     name: str = fastapi.Query(None, min_length=3),
     age_ge: int = fastapi.Query(None),
     age_le: int = fastapi.Query(None),
     specialty: enums.CareerEnum = fastapi.Query(None),
 ):
-    professor_repository = repository.ProfessorRepository(db=db)
+    if age_le is not None and age_ge is not None and age_ge > age_le:
+        raise fastapi.HTTPException(
+            status_code=fastapi.status.HTTP_400_BAD_REQUEST, detail="age_ge must be less than or equal to age_le"
+        )
+    professor_repository = repository.ProfessorRepository(session=session)
     professor_service = services.ProfessorService(repository=professor_repository)
     stmt = professor_service.get_all_stmt(name=name, age_ge=age_ge, age_le=age_le, specialty=specialty)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)
 
 
 @router.post("", summary="create professor", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.ProfessorSch)
 def create_professor(
-    db: DBSession,
+    session: DBSession,
     obj_in: sch.ProfessorCreateSch = fastapi.Body(...),
 ):
-    professor_repository = repository.ProfessorRepository(db=db)
+    professor_repository = repository.ProfessorRepository(session=session)
     professor_service = services.ProfessorService(repository=professor_repository)
     return professor_service.create(obj_in=obj_in)
 
@@ -58,10 +62,10 @@ async def get_professor(
     response_model=Page[sch.CourseSch],
 )
 async def get_professor_courses(
-    db: DBSession,
+    session: DBSession,
     professor: deps.Professor,
 ):
-    professor_repository = repository.ProfessorRepository(db=db)
+    professor_repository = repository.ProfessorRepository(session=session)
     professor_service = services.ProfessorService(repository=professor_repository)
     stmt = professor_service.get_courses(professor_id=professor.id)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)

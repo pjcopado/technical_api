@@ -17,21 +17,21 @@ router = fastapi.APIRouter(prefix="/courses", tags=["[school] courses"])
     response_model=Page[sch.CourseProfessorSch],
 )
 async def get_courses(
-    db: DBSession,
-    name: list[enums.CareerEnum] = fastapi.Query(None),
+    session: DBSession,
+    name: str = fastapi.Query(None, min_length=3),
 ):
-    course_repository = repository.CourseRepository(db=db)
+    course_repository = repository.CourseRepository(session=session)
     course_service = services.CourseService(repository=course_repository)
     stmt = course_service.get_all_stmt(name=name)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)
 
 
 @router.post("", summary="create course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseProfessorSch)
 def create_course(
-    db: DBSession,
+    session: DBSession,
     obj_in: sch.CourseCreateSch = fastapi.Body(...),
 ):
-    course_repository = repository.CourseRepository(db=db)
+    course_repository = repository.CourseRepository(session=session)
     course_service = services.CourseService(repository=course_repository)
     return course_service.create(obj_in=obj_in)
 
@@ -52,31 +52,33 @@ async def get_course(
     "/{course_id}/students",
     summary="get all students from course",
     status_code=fastapi.status.HTTP_200_OK,
-    response_model=Page[sch.CourseProfessorSch],
+    response_model=Page[sch.StudentSch],
 )
 async def get_course(
-    db: DBSession,
+    session: DBSession,
     course: deps.Course,
 ):
-    course_repository = repository.CourseRepository(db=db)
+    course_repository = repository.CourseRepository(session=session)
     course_service = services.CourseService(repository=course_repository)
     stmt = course_service.get_students(course_id=course.id)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)
 
 
 @router.post(
     "/{course_id}/students",
     summary="enroll student into course",
     status_code=fastapi.status.HTTP_201_CREATED,
-    # response_model=sch.CourseProfessorSch,
 )
 def enroll_student(
-    db: DBSession,
+    session: DBSession,
     course: deps.Course,
     obj_in: sch.CourseEnrollSch = fastapi.Body(...),
 ):
-    course_repository = repository.CourseRepository(db=db)
-    course_service = services.CourseService(repository=course_repository)
-    student_repository = repository.StudentRepository(db=db)
-    student_service = services.StudentService(repository=student_repository)
-    return course_service.enroll_student(student_service=student_service, course_id=course.id, student_id=obj_in.student_id)
+    student_repository = repository.StudentRepository(session=session)
+    professor_repository = repository.ProfessorRepository(session=session)
+    course_repository = repository.CourseRepository(session=session)
+    course_service = services.CourseService(
+        repository=course_repository, student_repository=student_repository, professor_repository=professor_repository
+    )
+    course_service.enroll_student(course_id=course.id, student_id=obj_in.student_id)
+    return {"message": "Student enrolled successfully"}

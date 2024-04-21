@@ -2,6 +2,10 @@
 .python-version
 .env
 
+# Code editor (IntelliJ & VSCode)
+.settings/
+.vscode/
+
 # Byte-compiled, optimized, and DLL files
 __pycache__/
 *.py[cod]

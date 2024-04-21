@@ -17,22 +17,22 @@ router = fastapi.APIRouter(prefix="/students", tags=["[school] students"])
     response_model=Page[sch.StudentSch],
 )
 async def get_student(
-    db: DBSession,
+    session: DBSession,
     name: str = fastapi.Query(None, min_length=3),
     career: enums.CareerEnum = fastapi.Query(None),
 ):
-    student_repository = repository.StudentRepository(db=db)
+    student_repository = repository.StudentRepository(session=session)
     student_service = services.StudentService(repository=student_repository)
     stmt = student_service.get_all_stmt(name=name, career=career)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)
 
 
 @router.post("", summary="create student", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.StudentSch)
 def create_student(
-    db: DBSession,
+    session: DBSession,
     obj_in: sch.StudentCreateSch = fastapi.Body(...),
 ):
-    student_repository = repository.StudentRepository(db=db)
+    student_repository = repository.StudentRepository(session=session)
     student_service = services.StudentService(repository=student_repository)
     return student_service.create(obj_in=obj_in)
 
@@ -56,10 +56,10 @@ async def get_student(
     response_model=Page[sch.CourseProfessorSch],
 )
 async def get_student_courses(
-    db: DBSession,
+    session: DBSession,
     student: deps.Student,
 ):
-    student_repository = repository.StudentRepository(db=db)
+    student_repository = repository.StudentRepository(session=session)
     student_service = services.StudentService(repository=student_repository)
     stmt = student_service.get_courses(student_id=student.id)
-    return sa_paginate(db, stmt)
+    return sa_paginate(session, stmt)
