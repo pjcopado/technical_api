@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 Python 3.10+
 
 ```bash
-git clone git@github.com:pjcopado/technical_api.git`
+git clone git@github.com:pjcopado/technical_api.git
 ```
 
 #### Run on Local
