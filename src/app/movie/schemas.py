@@ -1,11 +1,12 @@
 import pydantic
 
 from . import enums, utils
+from src.app.common.schemas import OrmBaseModel
 
 
 # habría que saber por modelo de negocio si algunos de los campos podrían ser nulos
 # en principio como no veo ninguno en los listados no lo considero
-class MovieBase(pydantic.BaseModel):
+class MovieBase(OrmBaseModel):
     name: str = pydantic.Field(..., title="Movie Name", description="Name of the movie")
     director: str = pydantic.Field(..., title="Movie Director", description="Director of the movie")
     ost: str = pydantic.Field(..., title="OST", description="Original Sound Track of the movie")

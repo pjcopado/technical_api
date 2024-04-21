@@ -2,6 +2,7 @@ import fastapi
 
 from src.app.core.config.manager import settings
 from src.app.movie import router as movie_router
+from src.app.school.api.routes import router as school_router
 
 
 router = fastapi.APIRouter()
@@ -26,3 +27,4 @@ async def health():
 
 
 router.include_router(prefix=settings.API_V1_STR, router=movie_router)
+router.include_router(prefix=settings.API_V1_STR, router=school_router)
