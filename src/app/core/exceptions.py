@@ -21,3 +21,21 @@ class CustomError(Exception):
         self.detail = detail
         self.status_code = status_code
         self.headers = headers
+
+
+class EntityDoesNotExist(CustomError):
+    """
+    Throw an exception when the data does not exist in the database.
+    """
+
+    def __init__(self, detail: str):
+        super().__init__(detail, status_code=status.HTTP_404_NOT_FOUND)
+
+
+class EntityAlreadyExists(CustomError):
+    """
+    Throw an exception when the data already exists in the database.
+    """
+
+    def __init__(self, detail: str):
+        super().__init__(detail, status_code=status.HTTP_400_BAD_REQUEST)
