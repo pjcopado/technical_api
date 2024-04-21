@@ -1,4 +1,4 @@
-__all__ = ["CourseCreateSch", "CourseSch", "CourseProfessorSch"]
+__all__ = ["CourseCreateSch", "CourseEnrollSch", "CourseSch", "CourseProfessorSch"]
 
 import pydantic
 
@@ -14,7 +14,11 @@ class CourseBaseSch(OrmBaseModel):
 
 
 class CourseCreateSch(CourseBaseSch):
-    professor_id: int | None = pydantic.Field(..., ge=1)
+    professor_id: int | None = pydantic.Field(...)
+
+
+class CourseEnrollSch(OrmBaseModel):
+    student_id: int = pydantic.Field(...)
 
 
 class CourseSch(CourseBaseSch, IntegerIDModelMixin):

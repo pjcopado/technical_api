@@ -1,4 +1,5 @@
 from src.app.school import schemas as sch, repository
+from src.app.school.services import StudentService
 from src.app.core import exceptions
 
 
@@ -24,3 +25,8 @@ class CourseService:
 
     def create(self, obj_in: sch.CourseCreateSch):
         return self.repository.create(obj_in=obj_in)
+
+    def enroll_student(self, student_service: StudentService, course_id: int, student_id: int):
+        course_obj_db = self.get_by_id_or_raise(id=course_id)
+        student_obj_db = student_service.get_by_id_or_raise(id=student_id)
+        return self.repository.enroll_student(course_id=course_id, student_id=student_id)

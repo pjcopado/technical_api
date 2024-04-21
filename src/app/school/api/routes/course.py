@@ -64,11 +64,19 @@ async def get_course(
     return sa_paginate(db, stmt)
 
 
-@router.post("", summary="enroll course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseProfessorSch)
-def enroll_course(
+@router.post(
+    "/{course_id}/students",
+    summary="enroll student into course",
+    status_code=fastapi.status.HTTP_201_CREATED,
+    # response_model=sch.CourseProfessorSch,
+)
+def enroll_student(
     db: DBSession,
-    obj_in: sch.CourseCreateSch = fastapi.Body(...),
+    course: deps.Course,
+    obj_in: sch.CourseEnrollSch = fastapi.Body(...),
 ):
     course_repository = repository.CourseRepository(db=db)
     course_service = services.CourseService(repository=course_repository)
-    return course_service.create(obj_in=obj_in)
+    student_repository = repository.StudentRepository(db=db)
+    student_service = services.StudentService(repository=student_repository)
+    return course_service.enroll_student(student_service=student_service, course_id=course.id, student_id=obj_in.student_id)

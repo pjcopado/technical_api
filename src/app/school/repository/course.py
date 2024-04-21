@@ -48,3 +48,10 @@ class CourseRepository:
         self.db.commit()
         self.db.refresh(obj_db)
         return obj_db
+
+    def enroll_student(self, course_id: int, student_id: int):
+        obj_db = models.StudentCourse(course_id=course_id, student_id=student_id)
+        self.db.add(obj_db)
+        self.db.commit()
+        self.db.refresh(obj_db)
+        return obj_db
