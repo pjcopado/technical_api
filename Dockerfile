@@ -15,5 +15,9 @@ RUN pip install -r requirements.txt
 # Copy all files
 COPY ./src ./src
 
-# Run server
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+# Copy start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Run start script
+CMD ["/start.sh"]
