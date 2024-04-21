@@ -18,3 +18,9 @@ alembic_upgrade:
 
 alembic_downgrade:
 	alembic downgrade -1
+
+docker_build_local:
+	docker build -t atam .
+
+docker_run_local:
+	docker run --env PORT=8000 -p 8000:8000 atam
