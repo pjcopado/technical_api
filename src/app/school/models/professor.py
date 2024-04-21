@@ -31,4 +31,6 @@ class Professor(Base, IntegerIDMixIn):
     courses = relationship("Course", back_populates="professor")
 
     def __repr__(self) -> str:
-        return f"Hola, soy el profesor {self.name}, tengo {self.age} años e imparto las asignaturas {', '.join(self.courses)}."
+        if self.courses:
+            return f"Hola, soy el profesor {self.name}, tengo {self.age} años e imparto las asignaturas: {', '.join([course.name for course in self.courses])}."
+        return f"Hola, soy el profesor {self.name}, tengo {self.age} años y actualmente no imparto asignaturas."

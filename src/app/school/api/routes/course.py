@@ -45,6 +45,7 @@ def create_course(
 async def get_course(
     course: deps.Course,
 ):
+    print(course)
     return course
 
 

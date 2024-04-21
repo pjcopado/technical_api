@@ -46,6 +46,7 @@ def create_student(
 async def get_student(
     student: deps.Student,
 ):
+    print(student)
     return student
 
 

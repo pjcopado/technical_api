@@ -52,6 +52,7 @@ def create_professor(
 async def get_professor(
     professor: deps.Professor,
 ):
+    print(professor)
     return professor
 
 
