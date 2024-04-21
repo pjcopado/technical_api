@@ -14,7 +14,7 @@ router = fastapi.APIRouter(prefix="/courses", tags=["[school] courses"])
     "",
     summary="get courses",
     status_code=fastapi.status.HTTP_200_OK,
-    response_model=Page[sch.CourseSch],
+    response_model=Page[sch.CourseProfessorSch],
 )
 async def get_courses(
     db: DBSession,
@@ -26,7 +26,7 @@ async def get_courses(
     return sa_paginate(db, stmt)
 
 
-@router.post("", summary="create course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseSch)
+@router.post("", summary="create course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseProfessorSch)
 def create_course(
     db: DBSession,
     obj_in: sch.CourseCreateSch = fastapi.Body(...),
@@ -40,10 +40,9 @@ def create_course(
     "/{course_id}",
     summary="get course by id",
     status_code=fastapi.status.HTTP_200_OK,
-    response_model=sch.CourseSch,
+    response_model=sch.CourseProfessorSch,
 )
 async def get_course(
-    db: DBSession,
     course: deps.Course,
 ):
     return course
@@ -53,7 +52,7 @@ async def get_course(
     "/{course_id}/students",
     summary="get all students from course",
     status_code=fastapi.status.HTTP_200_OK,
-    response_model=Page[sch.CourseSch],
+    response_model=Page[sch.CourseProfessorSch],
 )
 async def get_course(
     db: DBSession,
@@ -65,7 +64,7 @@ async def get_course(
     return sa_paginate(db, stmt)
 
 
-@router.post("", summary="enroll course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseSch)
+@router.post("", summary="enroll course", status_code=fastapi.status.HTTP_201_CREATED, response_model=sch.CourseProfessorSch)
 def enroll_course(
     db: DBSession,
     obj_in: sch.CourseCreateSch = fastapi.Body(...),

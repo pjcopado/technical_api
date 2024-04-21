@@ -44,7 +44,6 @@ def create_student(
     response_model=sch.StudentSch,
 )
 async def get_student(
-    db: DBSession,
     student: deps.Student,
 ):
     return student
@@ -54,7 +53,7 @@ async def get_student(
     "/{student_id}/courses",
     summary="get all courses from student",
     status_code=fastapi.status.HTTP_200_OK,
-    response_model=Page[sch.CourseSch],
+    response_model=Page[sch.CourseProfessorSch],
 )
 async def get_student_courses(
     db: DBSession,

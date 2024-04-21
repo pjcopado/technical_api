@@ -1,4 +1,4 @@
-__all__ = ["CourseCreateSch", "CourseSch"]
+__all__ = ["CourseCreateSch", "CourseSch", "CourseProfessorSch"]
 
 import pydantic
 
@@ -18,4 +18,8 @@ class CourseCreateSch(CourseBaseSch):
 
 
 class CourseSch(CourseBaseSch, IntegerIDModelMixin):
+    pass
+
+
+class CourseProfessorSch(CourseBaseSch, IntegerIDModelMixin):
     professor: ProfessorSch | None
