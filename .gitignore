@@ -1,3 +1,14 @@
+# Virtual Environment & packages
 .python-version
+.env
+
+# Byte-compiled, optimized, and DLL files
 __pycache__/
+*.py[cod]
+*$py.class
 *.pyc
+
+# Database-related
+*.sqlite3
+*.db
+postgres-data
