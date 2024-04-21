@@ -3,18 +3,19 @@ __all__ = ["CourseCreateSch", "CourseSch"]
 import pydantic
 
 from .professor import ProfessorSch
-from src.app.common.schemas import OrmBaseModel
+from src.app.common.schemas import OrmBaseModel, IntegerIDModelMixin
+from src.app.school import enums
 
 
 class CourseBaseSch(OrmBaseModel):
     name: str = pydantic.Field(..., min_length=3, max_length=64)
     duration_value: int = pydantic.Field(..., ge=1)
-    duration_unit: str = pydantic.Field(..., min_length=1, max_length=16)
+    duration_unit: enums.CourseDurationUnitEnum = pydantic.Field(...)
 
 
 class CourseCreateSch(CourseBaseSch):
-    professor_id: int = pydantic.Field(...)
+    professor_id: int | None = pydantic.Field(..., ge=1)
 
 
-class CourseSch(CourseBaseSch):
-    professor: ProfessorSch
+class CourseSch(CourseBaseSch, IntegerIDModelMixin):
+    professor: ProfessorSch | None

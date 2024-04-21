@@ -14,3 +14,9 @@ class CareerEnum(str, enum.Enum):
     @classmethod
     def to_list(cls):
         return list(map(lambda c: c.value, cls))
+
+
+class CourseDurationUnitEnum(str, enum.Enum):
+    WEEK = "week"
+    MONTH = "month"
+    YEAR = "year"

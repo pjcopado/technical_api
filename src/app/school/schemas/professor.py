@@ -4,7 +4,7 @@ import datetime
 import pydantic
 
 from src.app.school import enums
-from src.app.common.schemas import OrmBaseModel
+from src.app.common.schemas import OrmBaseModel, IntegerIDModelMixin
 
 
 class ProfessorBaseSch(OrmBaseModel):
@@ -22,12 +22,5 @@ class ProfessorUpdateSch(OrmBaseModel):
     birth_date: datetime.date = pydantic.Field(None)
 
 
-class ProfessorSch(ProfessorCreateSch):
-    id: int
-
-    """
-    @pydantic.computed_field
-    @property
-    def age(self) -> int:
-        return (datetime.date.today() - self.birth_date).days // 365
-    """
+class ProfessorSch(ProfessorBaseSch, IntegerIDModelMixin):
+    pass

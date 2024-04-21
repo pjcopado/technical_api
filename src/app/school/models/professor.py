@@ -4,7 +4,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from src.app.common.models import Base, IntegerIDMixIn
-from src.app.school.models.course import Course
 
 
 class Professor(Base, IntegerIDMixIn):
@@ -20,7 +19,7 @@ class Professor(Base, IntegerIDMixIn):
         today = datetime.date.today()
         return (today - self.birth_date).days // 365
 
-    courses: Mapped[list[Course]] = relationship(back_populates="professor")
+    courses = relationship("Course", back_populates="professor")
 
     def __repr__(self) -> str:
         return f"Hola, soy el profesor {self.name}, tengo {self.age} años e imparto las asignaturas {', '.join(self.courses)}."

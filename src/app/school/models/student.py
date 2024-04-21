@@ -1,7 +1,7 @@
 import datetime
 
 import sqlalchemy as sa
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from src.app.common.models import Base, IntegerIDMixIn
@@ -19,6 +19,15 @@ class Student(Base, IntegerIDMixIn):
     def age(self):
         today = datetime.date.today()
         return (today - self.birth_date).days // 365
+
+    courses = relationship(
+        "Course",
+        secondary="student_course",
+        back_populates="students",
+        order_by="Course.name",
+        cascade="save-update, merge, delete",
+        passive_deletes=True,
+    )
 
     def __repr__(self) -> str:
         return f"Hola, soy {self.name}, tengo {self.age} años y estudio {self.career}."
